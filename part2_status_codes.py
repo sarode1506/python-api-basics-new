@@ -15,7 +15,7 @@ print("=== Understanding Status Codes ===\n")
 
 # Example 1: Successful request (200 OK)
 print("--- Example 1: Valid Request ---")
-url_valid = "https://jsonplaceholder.typicode.com/posts/1"
+url_valid = "https://api.coinbase.com/v2/prices/invalid-coin"
 response = requests.get(url_valid)
 
 print(f"URL: {url_valid}")
@@ -80,12 +80,42 @@ for code, meaning in status_codes.items():
 #
 # Exercise 1: Fetch user with ID 5 and print their phone number
 #             URL: https://jsonplaceholder.typicode.com/users/5
+print("\n--- Exercise 1 ---")
+url_user5 = "https://jsonplaceholder.typicode.com/users/5"
+response_user5 = requests.get(url_user5)
+
+if response_user5.status_code == 200:
+    user5 = response_user5.json()
+    print(f"User 5 Phone: {user5['phone']}")
+else:
+    print("Failed to fetch user 5")
 #
 # Exercise 2: Check if a resource exists before printing data
 #             if response.status_code == 200:
 #                 print(data)
 #             else:
 #                 print("Resource not found!")
+
+print("\n--- Exercise 2 ---")
+url_check = "https://jsonplaceholder.typicode.com/users/10"
+response_check = requests.get(url_check)
+
+if response_check.status_code == 200:
+    data = response_check.json()
+    print("Resource Found!")
+    print(data)
+else:
+    print("Resource not found!")
 #
 # Exercise 3: Count how many comments are on post ID 1
 #             URL: https://jsonplaceholder.typicode.com/posts/1/comments
+
+print("\n--- Exercise 3 ---")
+url_comments = "https://jsonplaceholder.typicode.com/posts/1/comments"
+response_comments = requests.get(url_comments)
+
+if response_comments.status_code == 200:
+    comments = response_comments.json()
+    print(f"Post 1 has {len(comments)} comments")
+else:
+    print("Could not fetch comments")
