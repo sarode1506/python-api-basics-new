@@ -18,6 +18,10 @@ def get_user_info():
 
     user_id = input("Enter user ID (1-10): ")
 
+    if not user_id.isdigit():
+        print("Invalid input! Please enter a number.")
+        return
+
     url = f"https://jsonplaceholder.typicode.com/users/{user_id}"
     response = requests.get(url)
 
@@ -75,6 +79,51 @@ def get_crypto_price():
         print(f"\nCoin '{coin_id}' not found!")
         print("Try: btc-bitcoin, eth-ethereum, doge-dogecoin")
 
+def search_todos():
+    """Search todos by completion status."""
+    print("\n=== Todo Search ===\n")
+
+    status = input("Show completed todos? (true/false): ").lower().strip()
+
+    if status not in ["true", "false"]:
+        print("Invalid input. Please enter true or false.")
+        return
+
+    url = "https://jsonplaceholder.typicode.com/todos"
+    params = {"completed": status}
+
+    response = requests.get(url, params=params)
+
+    if response.status_code == 200:
+        todos = response.json()
+        print(f"\nFound {len(todos)} todos:")
+        for todo in todos[:5]:  # show first 5
+            print(f"- {todo['title']}")
+    else:
+        print("Failed to fetch todos.")
+
+
+def get_weather():
+    """Fetch current weather for Nashik."""
+    print("\n=== Weather Checker ===\n")
+
+    # Nashik coordinates
+    latitude = 19.9975
+    longitude = 73.7898
+
+    url = f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current_weather=true"
+
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        data = response.json()
+        weather = data["current_weather"]
+
+        print("\n--- Current Weather (Nashik) ---")
+        print(f"Temperature: {weather['temperature']}°C")
+        print(f"Wind Speed: {weather['windspeed']} km/h")
+    else:
+        print("Failed to fetch weather data.")
 
 def main():
     """Main menu for the program."""
@@ -87,9 +136,11 @@ def main():
         print("1. Look up user info")
         print("2. Search posts by user")
         print("3. Check crypto price")
-        print("4. Exit")
+        print("4. Search todos by completion")
+        print("5. Check weather (Nashik)")
+        print("6. Exit")
 
-        choice = input("\nEnter choice (1-4): ")
+        choice = input("\nEnter choice (1-6): ")
 
         if choice == "1":
             get_user_info()
@@ -98,6 +149,10 @@ def main():
         elif choice == "3":
             get_crypto_price()
         elif choice == "4":
+            search_todos()
+        elif choice == "5":
+            get_weather()
+        elif choice == "6":
             print("\nGoodbye!")
             break
         else:
