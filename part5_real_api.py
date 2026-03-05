@@ -25,6 +25,7 @@ CITIES = {
     "new york": (40.7128, -74.0060),
     "london": (51.5074, -0.1278),
     "tokyo": (35.6762, 139.6503),
+    "nashik": (19.9975, 73.7898),
     "sydney": (-33.8688, 151.2093),
 }
 
@@ -237,15 +238,48 @@ if __name__ == "__main__":
 #
 # Exercise 2: Create a function that compares prices of multiple cryptos
 #             Display them in a formatted table
+
+def compare_cryptos():
+    coins = ["bitcoin", "ethereum", "solana"]
+
+    print("\nCrypto Comparison")
+    print("----------------------------")
+
+    for coin in coins:
+        data = get_crypto_price(coin)
+
+        if data:
+            price = data["quotes"]["USD"]["price"]
+            print(f"{data['name']}: ${price:,.2f}")
 #
 # Exercise 3: Add POST request example
 #             Use: https://jsonplaceholder.typicode.com/posts
 #             Send: requests.post(url, json={"title": "My Post", "body": "Content"})
 #
+def create_post():
+    url = "https://jsonplaceholder.typicode.com/posts"
+
+    data = {
+        "title": "My Post",
+        "body": "Learning APIs is fun!"
+    }
+
+    response = requests.post(url, json=data)
+
+    print(response.json())
 # Exercise 4: Save results to a JSON file
 #             import json
 #             with open("results.json", "w") as f:
 #                 json.dump(data, f, indent=2)
+
+import json
+def save_crypto(coin):
+    data = get_crypto_price(coin)
+
+    with open("crypto_data.json", "w") as f:
+        json.dump(data, f, indent=2)
+
+    print("Saved to crypto_data.json")
 #
 # Exercise 5: Add API key support for OpenWeatherMap
 #             Sign up at: https://openweathermap.org/api
